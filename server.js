@@ -1,44 +1,40 @@
 const { WebSocketServer, WebSocket } = require('ws');
 const http = require('http');
 
-let messageCach = []
+// O Render define a porta automaticamente na variável de ambiente PORT
+const PORT = process.env.PORT || 8081;
 
-// Servidor HTTP básico
+// 1. Criamos o servidor HTTP
 const server = http.createServer((req, res) => {
+  // Rota de Health Check para o UptimeRobot
+  if (req.url === '/health') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    return res.end("OK");
+  }
+
+  // Resposta padrão para outras rotas
   res.writeHead(200);
-  res.end("Servidor HTTP funcionando 🚀");
+  res.end("Servidor Ativo 🚀");
 });
 
-// Servidor WebSocket
-const wss = new WebSocketServer(
-  { port: 8081 },
-  () => console.log("WS connected port 8081")
-);
+// 2. Acoplamos o WebSocket ao mesmo servidor HTTP
+const wss = new WebSocketServer({ server });
 
 wss.on('connection', (socket) => {
   console.log('Novo cliente conectado!');
 
-  // Quando recebe mensagem
   socket.on('message', (message) => {
-    //var msg = JSON.parse(message);
-    // messageCach.push(`${message}`)
-    // console.log(`Mensagem recebida: ${message}`);
-
-    // Envia para todos os clientes
     wss.clients.forEach((client) => {
-   
-      if (client.readyState === WebSocket.OPEN) 
-        {
-
-             // var msgData = JSON.stringify(messageCach);
-              client.send(`${message}`);     
-       }
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(`${message}`);
+      }
     });
   });
 
-  // Quando desconecta
-  socket.on('close', () => {
-    console.log('Cliente desconectado');
-  });
+  socket.on('close', () => console.log('Cliente desconectado'));
 });
 
+// 3. O servidor escuta em uma única porta
+server.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
