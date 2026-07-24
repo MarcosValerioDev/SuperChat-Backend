@@ -1,14 +1,1 @@
-{
-"scripts": {
-    "start": "node server.js"
-  },
-    "dependencies": {
-        "ws": "^8.18.3"
-    },
-    "devDependencies": {
-        "@types/ws": "^8.18.1"
-    },
-      "engines": {
-  "node": "22.x"
-}
-}
+{"scripts":{"start":"node server.js"},"dependencies":{"cors":"^2.8.6","ws":"^8.18.3"},"devDependencies":{"@types/ws":"^8.18.1"},"engines":{"node":"22.x"}}
