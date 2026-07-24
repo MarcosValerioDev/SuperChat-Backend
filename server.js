@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 8081;
 // Defina aqui as origens permitidas (Seu localhost e seu domínio de produção se houver)
 const ALLOWED_ORIGINS = [
   'http://localhost:3000',
-  'https://superchat-marcosdev.netlify.app/'
+  'https://superchat-marcosdev.netlify.app'
   // 'https://vercel.app' // Descomente e adicione quando fizer o deploy do frontend
 ];
 
